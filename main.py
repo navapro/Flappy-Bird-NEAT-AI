@@ -29,15 +29,34 @@ class bird:
     def __init__(self):
         sefl.x = x
         self.y = y
-        self.tick = 0
+        self.tilt = 0
         self.tick_count = 0
         self.vel = 0
         self.height = self.y
         self.img_count = 0
         self.img = self.IMGS[0]
+
     def jump(self):
         self.vel = -10.5
         self.tick_count = 0
         self.height = self.y
+
     def move(self):
-        
+        self.tick_count += 1
+
+        dis = self.vel*self.tick_count + 1.5*self.tick_count**2
+        if dis >= 16:
+            dis = 16
+        if dis < 0:
+            d -= 2
+        self.y = self.y + dis
+
+        if dis< 0 or self.y < self.height + 50:
+            if self.tilt < self.MAX_ROTATION:
+                self.tilt = self.MAX_ROTATION
+        else:
+            if self.tilt > -90:
+                self.tilt -= self.ROT_VEL
+    def draw(self,win):
+        self.img_count += 1
+           
