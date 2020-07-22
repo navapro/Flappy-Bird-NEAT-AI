@@ -20,14 +20,14 @@ BG_IMG = pygame.transform.scale2x(
     pygame.image.load(os.path.join("imgs", "bg.png")))
 
 
-class bird:
+class Bird:
     IMGS = BIRD_IMGS
     MAX_ROTATION = 25
     ROT_VEL = 20
     ANIMATION_TIME = 5
 
-    def __init__(self):
-        sefl.x = x
+    def __init__(self, x, y):
+        self.x = x
         self.y = y
         self.tilt = 0
         self.tick_count = 0
@@ -71,27 +71,27 @@ class bird:
                 self.img = self.IMGS[1]
             elif self.img_count < self.ANIMATION_TIME*3:
                 self.img = self.IMGS[2]
-            elif self.img_count < self.ANIMATION_TIME*4:
-                self.img = self.IMGS[3]
             elif self.img_count < self.ANIMATION_TIME*4 + 1:
                 self.img = self.IMGS[0]
                 self.img_count = 0
         rotated_img = pygame.transform.rotate(self.img, self.tilt)
-        new_img = rotated_img.get_rect(
-            center=self.img.get_rect(topLeft=(self.x, self.y)).center)
-        win.blit(rotated_img, new_img.topLeft)
+        new_rect = rotated_img.get_rect(center = self.img.get_rect(topleft=(self.x, self.y)).center)
+        win.blit(rotated_img, new_rect.topleft)
 
     def get_mask(self):
         return pygame.mask.from_surface(self.img)
 
-def draw_window(win,bird):
-    win.blit(BG_IMG, (0,0))
+
+def draw_window(win, bird):
+    win.blit(BG_IMG, (0, 0))
     bird.draw(win)
     pygame.display.update()
 
+
 def main():
-    bird = Bird(200,200)
-    win = pygame.display.set_mode(WIN_WIDTH,WIN_HEIGHT)
+
+    bird = Bird(200, 200)
+    win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 
     run = True
 
@@ -99,11 +99,11 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-        
-        draw_window(win,bird)
 
+        draw_window(win, bird)
 
-pygame.quit()
-quit()
+    pygame.quit()
+    quit()
+
 
 main()
