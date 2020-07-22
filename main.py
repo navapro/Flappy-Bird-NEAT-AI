@@ -61,14 +61,25 @@ class bird:
     def draw(self, win):
         self.img_count += 1
 
-        if self.img_count < self.ANIMATION_TIME:
-            self.img = self.IMGS[0]
-        elif self.img_count < self.ANIMATION_TIME*2:
+        if self.tilt <= -80:
             self.img = self.IMGS[1]
-        elif self.img_count < self.ANIMATION_TIME*3:
-            self.img = self.IMGS[2]
-        elif self.img_count < self.ANIMATION_TIME*4:
-            self.img = self.IMGS[3]
-        elif self.img_count < self.ANIMATION_TIME*4 + 1:
-            self.img = self.IMGS[0]
-            self.img_count = 0
+            self.img_count = self.ANIMATION_TIME*2
+        else:
+            if self.img_count < self.ANIMATION_TIME:
+                self.img = self.IMGS[0]
+            elif self.img_count < self.ANIMATION_TIME*2:
+                self.img = self.IMGS[1]
+            elif self.img_count < self.ANIMATION_TIME*3:
+                self.img = self.IMGS[2]
+            elif self.img_count < self.ANIMATION_TIME*4:
+                self.img = self.IMGS[3]
+            elif self.img_count < self.ANIMATION_TIME*4 + 1:
+                self.img = self.IMGS[0]
+                self.img_count = 0
+        rotated_img = pygame.transform.rotate(self.img, self.tilt)
+        new_img = rotated_img.get_rect(
+            center=self.img.get_rect(topLeft=(self.x, self.y)).center)
+        win.blit(rotated_img, new_img.topLeft)
+
+    def get_mask(self):
+        return pygame.mask.from_surface(self.img)
