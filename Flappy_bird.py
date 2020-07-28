@@ -75,7 +75,8 @@ class Bird:
                 self.img = self.IMGS[0]
                 self.img_count = 0
         rotated_img = pygame.transform.rotate(self.img, self.tilt)
-        new_rect = rotated_img.get_rect(center = self.img.get_rect(topleft=(self.x, self.y)).center)
+        new_rect = rotated_img.get_rect(
+            center=self.img.get_rect(topleft=(self.x, self.y)).center)
         win.blit(rotated_img, new_rect.topleft)
 
     def get_mask(self):
@@ -86,32 +87,34 @@ class Pipe:
     GAP = 200
     VEL = 5
 
-    def _init_(self,x):
+    def _init_(self, x):
         self.x = x
         self.height = 0
 
         self.top = 0
         self.bottom = 0
-        self.PIPE_TOP = pygame.transform.flip(PIPE_IMG,False,True)
+        self.PIPE_TOP = pygame.transform.flip(PIPE_IMG, False, True)
         self.PIPE_BOTTOM = PIPE_IMG
 
         self.passed = False
         self.set_height()
 
     def set_height(self):
-        self.height = random.randrange(50,450)
+        self.height = random.randrange(50, 450)
         self.top = self.height - self.PIPE_TOP.get_height()
         self.bottom = self.height + self.GAP
+
     def move(self):
         self.x -= self.VEL
-    def draw(self,win):
-        win.blit(self.PIPE_TOP,(self.x,self.top))
-        win.blit(self.PIPE_BOTTOM,(self.x,self.bottom))
 
-    def collide(self,bird):
+    def draw(self, win):
+        win.blit(self.PIPE_TOP, (self.x, self.top))
+        win.blit(self.PIPE_BOTTOM, (self.x, self.bottom))
+
+    def collide(self, bird):
         bird_mask = bird.get_mask()
         top_mask = pygame.mask.from_surface(self.PIPE_TOP)
-        bottom_mask =pygame.mask.from_surface(self.PIPE_BOTTOM)
+        bottom_mask = pygame.mask.from_surface(self.PIPE_BOTTOM)
 
         top_ofset = (self.x - bird.x, self.top - round(bird.y))
         bottom_ofset = (self.x - bird.x, self.bottom - round(bird.y))
@@ -125,28 +128,30 @@ class Pipe:
         # Else return False.
         return False
 
+
 class Base:
     VEL = 5
     WIDTH = BASE_IMG.get_width()
 
-    def __init__(self,y):
+    def __init__(self, y):
         self.y = y
         self.x1 = 0
         self.x2 = WIDTH
+
     def move(self):
         self.x1 -= self.VEL
         self.x2 -= self.VEL
 
-        if self.x1 + self.WIDTH  < 0:
+        if self.x1 + self.WIDTH < 0:
             self.x1 = self.x2 + self.WIDTH
         if self.x2 + self.WIDTH < 0:
             self.x2 = self.x1 + self.WIDTH
 
-    def draw(self,win):
-        win.blit(self.IMG, (self.x1,self.y))
-        win.blit(self.IMG, (self.x2,self.y))
+    def draw(self, win):
+        win.blit(self.IMG, (self.x1, self.y))
+        win.blit(self.IMG, (self.x2, self.y))
 
-        
+
 def draw_window(win, bird):
     win.blit(BG_IMG, (0, 0))
     bird.draw(win)
