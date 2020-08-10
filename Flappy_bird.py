@@ -86,7 +86,7 @@ class Bird:
 class Pipe:
     GAP = 200
     VEL = 5
-
+    IMG = PIPE_IMG
     def _init_(self, x):
         self.x = x
         self.height = 0
@@ -131,9 +131,10 @@ class Pipe:
 
 class Base:
     VEL = 5
-    WIDTH = BASE_IMG.get_width()
+    IMG = BASE_IMG
 
-    def __init__(self, y):
+    def __init__(self,y):
+        WIDTH = BASE_IMG.get_width()
         self.y = y
         self.x1 = 0
         self.x2 = WIDTH
@@ -152,15 +153,23 @@ class Base:
         win.blit(self.IMG, (self.x2, self.y))
 
 
-def draw_window(win, bird):
+def draw_window(win, bird, pipes, base):
     win.blit(BG_IMG, (0, 0))
+
+    for Pipe in pipes:
+        Pipe.draw(win);
+    
+    base.draw(win)
     bird.draw(win)
     pygame.display.update()
 
 
 def main():
 
-    bird = Bird(200, 200)
+    bird = Bird(230, 350)
+    base = Base(730)
+    pipes = []
+
     win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     clock = pygame.time.Clock()
 
@@ -173,10 +182,11 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
         bird.move()
-        draw_window(win, bird)
+        draw_window(win, bird, pipes, base)
 
     pygame.quit()
     quit()
 
 
 main()
+# make class using new things.
